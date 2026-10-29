@@ -1,6 +1,93 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools>=64", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "xco2qc"
+version = "0.0.1"
+description = "XCO2 processing pipeline tools for the PMEL ocean carbon group"
+authors = [{ name = "John Evans", email = "jevansuw@uw.edu" }]
+license = { text = "MIT" }
+requires-python = ">=3.10,<3.11"
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+]
+# The PyCO2SYS pin carries over from the upstream conda environment files. The code relies on
+# numpy 1.x attributes removed in numpy 2 and on pandas 2.2+ frequency aliases.
+dependencies = [
+    "cftime",
+    "erddapy",
+    "gsw",
+    "ipykernel",
+    "ipympl",
+    "ipython",
+    "ipywidgets>=8.0",
+    "lxml",
+    "matplotlib>=3.3.2",
+    "netcdf4",
+    "numpy<2",
+    "openpyxl!=3.1.1",
+    "pandas>=2.2",
+    "plotly",
+    "pyco2sys==1.8.0",
+    "pyqt5",
+    "python-dateutil>=2.8.1",
+    "python-docx",
+    "pyyaml",
+    "requests",
+    "scikit-learn",
+    "scipy",
+    "seaborn",
+    "statsmodels",
+    "xarray",
+]
+
+[dependency-groups]
+dev = [
+    "coverage",
+    "flake8",
+    "pytest",
+    "pytest-cov",
+    "pytest-xdist",
+    "sphinx",
+    "tables",
+]
+
+[project.scripts]
+xco2-import = "xco2qc.commandline:import_mapco2"
+xco2-reduce = "xco2qc.commandline:mapco2_reduce"
+xco2-initial-summmary = "xco2qc.commandline:initial_summary"
+xco2-pre = "xco2qc.commandline:calculate_pre_xco2"
+xco2-post = "xco2qc.commandline:calculate_post_xco2"
+xco2-qc = "xco2qc.commandline:qc_xco2"
+xco2-merge = "xco2qc.commandline:merge"
+xco2-adjustments = "xco2qc.commandline:adjustments"
+xco2-apply-metadata-conventions = "xco2qc.commandline:apply_metadata_conventions"
+xco2-gen-socat = "xco2qc.commandline:generate_socat_xml"
+xco2-socat-qc = "xco2qc.commandline:calculate_socat_qc"
+xco2-compare-mbl = "xco2qc.commandline:compare_with_mbl"
+xco2-trim = "xco2qc.commandline:trim"
+xco2-nc2csv = "xco2qc.commandline:nc2csv"
+
+[tool.setuptools.packages.find]
+include = ["xco2qc*"]
+
+[tool.setuptools.package-data]
+xco2qc = [
+    "core/*.yml",
+    "core/climatology/chl/data/*.xlsx",
+    "core/climatology/o2/data/*.xlsx",
+    "core/data/*.xlsx",
+    "core/data/*.xml",
+    "core/data/*.yml",
+    "core/data/mbl/data/*.gz",
+    "core/vardefs/config/*.yml",
+    "science_algorithms/o2/*.npz",
+]
 
 [tool.pytest.ini_options]
 filterwarnings = [
